@@ -163,6 +163,31 @@
     main { padding: 14px 16px; }
     .cards-grid { grid-template-columns: 1fr; }
   }
+
+  /* Dark mode */
+  body.dark {
+    --bg: #1a1a2e;
+    --card: #16213e;
+    --text: #e8eaed;
+    --muted: #9aa0a6;
+    --border: #3c4043;
+    --correct-bg: #1a3a2a;
+    --shadow: 0 2px 8px rgba(0,0,0,0.40);
+  }
+  body.dark .toolbar { background: #0f3460; border-bottom-color: #3c4043; }
+  body.dark #searchInput { color: var(--text); }
+  body.dark select { color: var(--text); }
+  body.dark header { background: #0f3460; }
+  body.dark mark { background: #5a4a00; color: #ffe57f; }
+  body.dark .qnum { background: #1a3a6e; }
+  body.dark .qtag { background: #2a2a3e; }
+
+  .btn-dark {
+    padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 24px;
+    background: transparent; color: var(--muted); font-size: 1rem;
+    cursor: pointer; transition: all .15s; line-height: 1;
+  }
+  .btn-dark:hover { border-color: var(--primary); color: var(--primary); }
 </style>
 </head>
 <body>
@@ -208,6 +233,7 @@
     <option value="SMT TE-Level 4">Lv4</option>
   </select>
   <button class="btn-toggle" id="toggleAnswers">Hide Answers</button>
+  <button class="btn-dark" id="darkToggle" title="Toggle dark mode">🌙</button>
   <span class="count-badge" id="countBadge">719 questions</span>
 </div>
 
@@ -316,6 +342,17 @@ toggleBtn.addEventListener('click', () => {
 
 render();
 
+// ── Dark mode ──────────────────────────────────────────────────
+const darkToggle = document.getElementById('darkToggle');
+if (localStorage.getItem('darkMode') === '1') document.body.classList.add('dark');
+darkToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.contains('dark');
+  localStorage.setItem('darkMode', isDark ? '1' : '0');
+  darkToggle.textContent = isDark ? '☀️' : '🌙';
+});
+if (document.body.classList.contains('dark')) darkToggle.textContent = '☀️';
+
 // ── Text-selection → search feature ──────────────────────────
 const selBtn = document.getElementById('selectionBtn');
 let hideTimer = null;
@@ -353,6 +390,8 @@ selBtn.addEventListener('click', () => {
   searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
   searchInput.focus();
 });
+
+</script>
 
 <footer style="text-align:center;padding:18px 0 24px;color:#5f6368;font-size:0.8rem;">
   &copy; 2026 ije &mdash; Licensed 
