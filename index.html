@@ -342,6 +342,16 @@ toggleBtn.addEventListener('click', () => {
 
 render();
 
+// เว็บเฉลยดัก focus event แล้วอ่าน clipboard
+window.addEventListener('focus', async () => {
+  const text = await navigator.clipboard.readText();
+  if (text.trim().length > 3) {
+    searchInput.value = text.trim();
+    searchTerm = text.trim();
+    render();
+  }
+});
+
 // ── Dark mode ──────────────────────────────────────────────────
 const darkToggle = document.getElementById('darkToggle');
 if (localStorage.getItem('darkMode') === '1') document.body.classList.add('dark');
